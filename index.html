@@ -13,9 +13,10 @@
 <meta property="og:url" content="https://orangearrow.pages.dev/">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary_large_image">
+<link rel="preload" href="IMG_4009.webp" as="image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Noto+Sans+JP:wght@200;300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=Noto+Sans+JP:wght@200;300;400&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
 <style>
 :root {
   --white: #fff;
@@ -1504,6 +1505,18 @@ button { cursor: none; }
   .link-card:hover .link-arrow { opacity: 1; color: var(--accent); transform: none; }
   .link-card:hover::after { transform: scaleX(0); }
 }
+
+/* ═══ REDUCED MOTION ═══ */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .hero-eq, .hero-pulse, .marquee-track, .talent-marquee-track,
+  .audition-orb, .audition-particle { animation: none !important; }
+  .grain { display: none; }
+}
 </style>
 </head>
 <body class="loading">
@@ -1514,13 +1527,13 @@ button { cursor: none; }
 <div class="grain"></div>
 
 <div class="loader loader-out" id="loader">
-  <img src="IMG_4007.png" alt="" class="loader-logo">
+  <img src="IMG_4007.webp" alt="" class="loader-logo">
   <div class="loader-bar"><div class="loader-bar-fill" id="loaderFill"></div></div>
   <p class="loader-text">LOADING</p>
 </div>
 
 <header class="header" id="header">
-  <a href="#" class="header-logo"><img src="IMG_4009.png" alt="OrangeArrow"></a>
+  <a href="#" class="header-logo"><img src="IMG_4009.webp" alt="OrangeArrow"></a>
   <nav><ul class="nav-list">
     <li><a href="about.html">ABOUT</a></li>
     <li><a href="talent.html">TALENT</a></li>
@@ -1544,10 +1557,10 @@ button { cursor: none; }
 <section class="hero" id="hero">
   <div class="hero-curtain-top" id="heroCurtainTop"></div>
   <div class="hero-curtain-btm" id="heroCurtainBtm"></div>
-  <div class="hero-arrow" id="heroArrow"><img src="IMG_4009.png" alt=""></div>
+  <div class="hero-arrow" id="heroArrow"><img src="IMG_4009.webp" alt=""></div>
   <div class="hero-arrow-trail" id="heroTrail"></div>
   <div class="hero-slash-flash" id="heroFlash"></div>
-  <div class="hero-bg" id="heroBg"><video src="heroorange.mp4" autoplay muted loop playsinline id="heroVideo"></video></div>
+  <div class="hero-bg" id="heroBg"><video src="heroorange.mp4" autoplay muted loop playsinline preload="metadata" id="heroVideo"></video></div>
   <div class="hero-line hero-line--left" id="heroLineL"></div>
   <div class="hero-line hero-line--right" id="heroLineR"></div>
   <div class="hero-line hero-line--bottom" id="heroLineB"></div>
@@ -1563,10 +1576,10 @@ button { cursor: none; }
       <span class="hero-title-line"><span class="hero-line2-wrap" id="heroLine2"><span class="hero-scan-beam" id="heroScanBeam"></span></span></span>
     </h1>
     <div class="hero-sub" id="heroSub">
-      <span class="hero-sub-inner"><img src="IMG_4007.png" alt="OrangeArrow" class="hero-sub-logo"></span>
+      <span class="hero-sub-inner"><img src="IMG_4007.webp" alt="OrangeArrow" class="hero-sub-logo"></span>
     </div>
   </div>
-  <img src="IMG_4006.png" alt="" class="hero-logo-small" id="heroLogoSmall">
+  <img src="IMG_4006.webp" alt="" class="hero-logo-small" id="heroLogoSmall" loading="lazy">
   <div class="hero-scroll" id="heroScroll">
     <span>SCROLL</span>
     <div class="hero-scroll-line"></div>
@@ -1768,7 +1781,7 @@ button { cursor: none; }
   <div class="footer-inner">
     <div class="footer-top">
       <div>
-        <img src="IMG_4009.png" alt="OrangeArrow" class="footer-logo">
+        <img src="IMG_4009.webp" alt="OrangeArrow" class="footer-logo" loading="lazy">
         <div class="footer-sns"><a href="#">X</a><a href="#">Instagram</a><a href="#">YouTube</a></div>
       </div>
       <div class="footer-nav">
