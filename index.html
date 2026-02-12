@@ -77,10 +77,51 @@ button { cursor: none; }
 .cursor-trail.visible { opacity: 1; }
 .cursor-trail.hovering { width: 64px; height: 64px; border-color: rgba(232,168,56,0.15); }
 
-/* ═══ SCROLL PROGRESS ═══ */
-.scroll-progress {
-  position: fixed; top: 0; left: 0; height: 2px; background: var(--accent);
-  z-index: 9999; width: 0; transition: none;
+/* ═══ SCROLL ARROW GAUGE ═══ */
+.scroll-gauge {
+  position: fixed; left: 20px; top: 50%; transform: translateY(-50%);
+  z-index: 9998; height: 280px; width: 40px;
+  opacity: 0; transition: opacity 0.5s var(--ease);
+  pointer-events: none;
+}
+.scroll-gauge.vis { opacity: 1; }
+.scroll-gauge-track {
+  position: absolute; left: 7px; top: 0; width: 1px; height: 100%;
+  background: rgba(200,200,200,0.15);
+}
+.scroll-gauge-fill {
+  position: absolute; left: 7px; top: 0; width: 1px; height: 0;
+  background: var(--accent);
+  transition: height 0.1s linear;
+}
+.scroll-gauge-arrow {
+  position: absolute; left: 7px; top: 0;
+  transform: translate(-50%, -2px);
+  transition: top 0.1s linear;
+}
+.scroll-gauge-arrow::before {
+  content: ''; display: block;
+  width: 7px; height: 7px;
+  border-right: 1.5px solid var(--accent); border-bottom: 1.5px solid var(--accent);
+  transform: rotate(45deg);
+}
+.scroll-gauge-pct {
+  position: absolute; left: 7px; bottom: -22px; transform: translateX(-50%);
+  font-family: var(--serif); font-size: 9px; letter-spacing: 0.05em;
+  color: var(--accent); opacity: 0.6; white-space: nowrap;
+}
+.scroll-gauge-letters {
+  position: absolute; left: 22px; top: 0; height: 100%;
+  display: flex; flex-direction: column; justify-content: space-between;
+}
+.scroll-gauge-letter {
+  font-family: var(--serif); font-size: 14px; font-weight: 400;
+  color: var(--accent); line-height: 1;
+  opacity: 0; transform: translateY(8px);
+  transition: opacity 0.4s var(--ease), transform 0.4s var(--ease);
+}
+.scroll-gauge-letter.vis {
+  opacity: 0.7; transform: translateY(0);
 }
 
 /* ═══ GRAIN ═══ */
@@ -1403,6 +1444,7 @@ button { cursor: none; }
   .footer-legal a { font-size: 9px; }
   /* View more: smaller */
   .view-more { margin-top: 28px; font-size: 12px; }
+  .scroll-gauge { display: none; }
 }
 
 /* ═══ SMALL MOBILE ═══ */
@@ -1523,7 +1565,25 @@ button { cursor: none; }
 
 <div class="cursor" id="cursor"></div>
 <div class="cursor-trail" id="cursorTrail"></div>
-<div class="scroll-progress" id="scrollProgress"></div>
+<div class="scroll-gauge" id="scrollGauge">
+  <div class="scroll-gauge-track"></div>
+  <div class="scroll-gauge-fill" id="scrollGaugeFill"></div>
+  <div class="scroll-gauge-arrow" id="scrollGaugeArrow"></div>
+  <div class="scroll-gauge-pct" id="scrollGaugePct"></div>
+  <div class="scroll-gauge-letters" id="scrollGaugeLetters">
+    <span class="scroll-gauge-letter">O</span>
+    <span class="scroll-gauge-letter">r</span>
+    <span class="scroll-gauge-letter">a</span>
+    <span class="scroll-gauge-letter">n</span>
+    <span class="scroll-gauge-letter">g</span>
+    <span class="scroll-gauge-letter">e</span>
+    <span class="scroll-gauge-letter">A</span>
+    <span class="scroll-gauge-letter">r</span>
+    <span class="scroll-gauge-letter">r</span>
+    <span class="scroll-gauge-letter">o</span>
+    <span class="scroll-gauge-letter">w</span>
+  </div>
+</div>
 <div class="grain"></div>
 
 <div class="loader loader-out" id="loader">
@@ -1990,11 +2050,24 @@ document.querySelectorAll('.mnav').forEach(function(a){
   a.addEventListener('click', function(){ hb.classList.remove('active'); mn.classList.remove('open'); document.body.style.overflow=''; });
 });
 
-/* ─── SCROLL PROGRESS ─── */
-var sp = document.getElementById('scrollProgress');
+/* ─── SCROLL ARROW GAUGE ─── */
+var sg = document.getElementById('scrollGauge');
+var sgFill = document.getElementById('scrollGaugeFill');
+var sgArrow = document.getElementById('scrollGaugeArrow');
+var sgPct = document.getElementById('scrollGaugePct');
+var sgLetters = document.querySelectorAll('.scroll-gauge-letter');
+var sgTotal = sgLetters.length;
 window.addEventListener('scroll', function(){
   var h = document.documentElement.scrollHeight - window.innerHeight;
-  sp.style.width = (window.pageYOffset / h * 100) + '%';
+  var pct = Math.min(window.pageYOffset / h, 1);
+  sgFill.style.height = (pct * 100) + '%';
+  sgArrow.style.top = (pct * 100) + '%';
+  sgPct.textContent = Math.round(pct * 100) + '%';
+  var show = Math.floor(pct * sgTotal);
+  for(var i = 0; i < sgTotal; i++){
+    sgLetters[i].classList.toggle('vis', i < show);
+  }
+  sg.classList.toggle('vis', window.pageYOffset > 200);
 }, {passive:true});
 
 /* ─── BACK TO TOP ─── */
